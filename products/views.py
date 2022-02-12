@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Product
 
 import json
 
@@ -13,8 +14,7 @@ def index(request):
 def products(request):
 
     title = 'geekShop - каталог'
-    f = open('products/fixtures/products.json', encoding='utf-8')
-    products = json.load(f)
+    products = Product.objects.all()
     context = {'title': title, 'products': products}
 
     return render(request, "products/products.html", context)
