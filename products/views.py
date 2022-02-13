@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import Product
+from .models import Product, ProductCategory
 
 import json
 
@@ -15,6 +15,7 @@ def products(request):
 
     title = 'geekShop - каталог'
     products = Product.objects.all()
-    context = {'title': title, 'products': products}
+    categories = ProductCategory.objects.all()
+    context = {'title': title, 'products': products, 'categories': categories}
 
     return render(request, "products/products.html", context)
