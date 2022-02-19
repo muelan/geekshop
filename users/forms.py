@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.core.exceptions import ValidationError
 
 from users.models import User
 
@@ -32,3 +33,14 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+
+    # Validator for entering username no more than 10 characters.
+    # Consol output
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        print(username)
+        if len(username) > 10:
+            raise ValidationError('Length username must not exceed 10 characters')
+        return username
+
+
