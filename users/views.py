@@ -29,6 +29,7 @@ def registration(request):
         form = UserRegistrationForm(data=request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Поздравляем! Регистрация прошла успешно!')
             return HttpResponseRedirect(reverse('users:login'))
         else:
             print(form.errors)
