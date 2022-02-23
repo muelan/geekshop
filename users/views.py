@@ -38,6 +38,10 @@ def registration(request):
     context = {'title': 'GeekShop - Регистрация', 'form': form}
     return render(request, 'users/registration.html', context)
 
+def profile(request):
+    context = {'title': 'GeekShop - Профиль'}
+    return render(request, 'users/profile.html', context)
+
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
