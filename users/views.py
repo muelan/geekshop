@@ -40,7 +40,14 @@ def registration(request):
 
 
 def profile(request):
-    form = UserProfileForm(instance=request.user)
+    user = request.user
+    if request.method == 'POST':
+        form = UserProfileForm(instance=user, files=request.FILES, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect(reverse('users:profile'))
+    else:
+        form = UserProfileForm(instance=user)
     context = {'title': 'GeekShop - Профиль', 'form': form}
     return render(request, 'users/profile.html', context)
 
