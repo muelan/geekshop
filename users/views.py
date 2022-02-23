@@ -7,6 +7,7 @@ from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from baskets.models import Basket
 
 
+
 def login(request):
     if request.method == 'POST':
         form = UserLoginForm(data=request.POST)
@@ -44,9 +45,22 @@ def profile(request):
     user = request.user
     if request.method == 'POST':
         form = UserProfileForm(instance=user, files=request.FILES, data=request.POST)
+        name1 = request.POST.get('first_name')
+        name2 = request.POST.get('last_name')
+        print(name1.isalpha())
+        print(name2.isalpha())
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('users:profile'))
+            if name1.isalpha():
+                if name2.isalpha():
+                    form.save()
+                    messages.success(request, 'Изменения внесены!')
+                    return HttpResponseRedirect(reverse('users:profile'))
+                else:
+                    messages.success(request, 'Неправильно введена фамилия')
+                    form = UserProfileForm(instance=user)
+            else:
+                messages.success(request, 'Неправильно введено имя')
+                form = UserProfileForm(instance=user)
     else:
         form = UserProfileForm(instance=user)
     context = {'title': 'GeekShop - Профиль',
