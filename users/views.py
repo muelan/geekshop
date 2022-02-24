@@ -49,8 +49,6 @@ def profile(request):
         form = UserProfileForm(instance=user, files=request.FILES, data=request.POST)
         name1 = request.POST.get('first_name')
         name2 = request.POST.get('last_name')
-        print(name1.isalpha())
-        print(name2.isalpha())
         if form.is_valid():
             if name1.isalpha():
                 if name2.isalpha():
