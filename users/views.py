@@ -2,6 +2,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
+from django.core.mail import send_mail
+from django.conf import settings
 # from django.contrib import messages
 
 from common.views import CommonContextMixin
@@ -19,7 +21,7 @@ class UserLoginView(CommonContextMixin, LoginView):
 class UserRegistrationView(CommonContextMixin, SuccessMessageMixin, CreateView):
     model = User
     form_class = UserRegistrationForm
-    template_name = 'users/register.html'
+    template_name = 'users/registration.html'
     success_url = reverse_lazy('users:login')
     success_message = 'Вы успешно зарегестрировались!'
     title = 'GeekShop - Регистрация'
