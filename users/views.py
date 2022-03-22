@@ -4,18 +4,10 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy
 # from django.contrib import messages
 
+from common.views import CommonContextMixin
 from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from users.models import User
 from baskets.models import Basket
-
-
-class CommonContextMixin:
-    title = None
-
-    def get_context_data(self, **kwargs):
-        context = super(CommonContextMixin, self).get_context_data(**kwargs)
-        context['title'] = self.title
-        return context
 
 
 class UserLoginView(CommonContextMixin, LoginView):
@@ -116,5 +108,14 @@ class UserLogoutView(LogoutView):
 # def logout(request):
 #     auth.logout(request)
 #     return HttpResponseRedirect(reverse('index'))
+
+
+# class CommonContextMixin:
+#     title = None
+#
+#     def get_context_data(self, **kwargs):
+#         context = super(CommonContextMixin, self).get_context_data(**kwargs)
+#         context['title'] = self.title
+#         return context
 
 
