@@ -1,3 +1,4 @@
+import random, hashlib
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
 from django.core.exceptions import ValidationError
@@ -34,6 +35,14 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+
+    def save(self):
+        user = super(UserRegistrationForm, self).save()
+        user.is_active = False
+        salt = hashlib.sha1(str(random.random()).encode('utf8')).hexdigest()[:6]
+        user.activation_key = hashlib.sha1((user.email + salt).encode('utf8')).hexdigest()
+        user.save()
+        return user
 
 
     # Validator for entering username no more than 10 characters.
