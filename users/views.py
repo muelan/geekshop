@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView, UpdateView
 from django.urls import reverse_lazy, reverse
 from django.core.mail import send_mail
 from django.conf import settings
+from django.contrib import auth
 from django.shortcuts import render, HttpResponseRedirect
 from users.models import User
 # from django.contrib import messages
@@ -69,12 +70,14 @@ def verify(request, email, activate_key):
             user.activation_key_expires = None
             user.is_active = True
             user.save(update_fields=['activation_key', 'activation_key_expires', 'is_active'])
-            user.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return render(request, 'users/verification.html')
+        else:
+            print(f'Ошибка активации пользователя: {user}')
             return render(request, 'users/verification.html')
     except Exception as e:
-        pass
-    else:
-        return render(request, 'users/verification.html')
+        print(f'Ошибка активации пользователя : {e.args}')
+        return HttpResponseRedirect(reverse('IndexView'))
 
 
 class UserProfileView(CommonContextMixin, UpdateView):
