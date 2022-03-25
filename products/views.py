@@ -1,35 +1,58 @@
-from django.shortcuts import render
-from .models import Product, ProductCategory
+from django.views.generic.base import TemplateView
+from django.views.generic.list import ListView
 
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from common.views import CommonContextMixin
+from .models import Product, ProductCategory
 
 import json
 
 # Create your views here.
 
 
-def index(request):
-    context = {'title': 'geekShop'}
-    return render(request, 'products/index.html', context)
+class IndexView(CommonContextMixin, TemplateView):
+    template_name = 'products/index.html'
+    title = 'GeekShop'
 
 
-def products(request, category_id=None, page=1):
-    if category_id:
-        products = Product.objects.filter(category_id=category_id)
-    else:
-        products = Product.objects.all()
+class ProductsListView(CommonContextMixin, ListView):
+    model = Product
+    template_name = 'products/products.html'
+    paginate_by = 3
+    title = 'GeekShop - Каталог'
 
-    paginator = Paginator(products, 3)
-    try:
-        products_paginator = paginator.page(page)
-    except PageNotAnInteger:
-        products_paginator = paginator.page(1)
-    except EmptyPage:
-        products_paginator = paginator.page(paginator.num_pages)
+    def get_queryset(self):
+        queryset = super(ProductsListView, self).get_queryset()
+        category_id = self.kwargs.get('category_id')
+        return queryset.filter(category_id=category_id) if category_id else queryset
 
-    context = {'title': 'GeekShop - Каталог',
-               'categories': ProductCategory.objects.all(),
-               'products': products_paginator,
-               }
+    def get_context_data(self, **kwargs):
+        context = super(ProductsListView, self).get_context_data(**kwargs)
+        context['categories'] = ProductCategory.objects.all()
+        return context
 
-    return render(request, "products/products.html", context)
+
+# def index(request):
+#     context = {'title': 'geekShop'}
+#     return render(request, 'products/index.html', context)
+
+
+# def products(request, category_id=None, page=1):
+#     if category_id:
+#         products = Product.objects.filter(category_id=category_id)
+#     else:
+#         products = Product.objects.all()
+#
+#     paginator = Paginator(products, 3)
+#     try:
+#         products_paginator = paginator.page(page)
+#     except PageNotAnInteger:
+#         products_paginator = paginator.page(1)
+#     except EmptyPage:
+#         products_paginator = paginator.page(paginator.num_pages)
+#
+#     context = {'title': 'GeekShop - Каталог',
+#                'categories': ProductCategory.objects.all(),
+#                'products': products_paginator,
+#                }
+#
+#     return render(request, "products/products.html", context)

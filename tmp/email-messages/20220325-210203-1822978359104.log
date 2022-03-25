@@ -1,0 +1,14 @@
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: 
+ =?utf-8?b?0J/QvtC00YLQstC10YDQttC00LXQvdC40LUg0YPRh9C10YLQvdC+0Lkg0LfQsNC/?=
+ =?utf-8?b?0LjRgdC4IG11ZWxhbl8xMQ==?=
+From: django@geekshop.local
+To: muelan1@mail.ru
+Date: Fri, 25 Mar 2022 18:02:03 -0000
+Message-ID: <164823132325.24140.11590271179720228886@DESKTOP-E7OQTU9>
+
+Для подтверждения учетной записи muelan_11 на портале http://localhost:8000 перейдите по ссылке: 
+http://localhost:8000/users/verify/muelan1@mail.ru/(e44438d17127a6523bdab067c8c3077271889cdb/
+-------------------------------------------------------------------------------
